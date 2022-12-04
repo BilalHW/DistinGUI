@@ -5,19 +5,21 @@ const itemSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, 'Please add a name'],
+      unique: true,
     },
     description: {
       type: String,
-      required: [true, 'Please add an description'],
-      unique: true,
+      
     },
     price: {
       type: String,
-      required: [true, 'Please add a price'],
     },
     image: {
       type: String,
-      // required: [true, 'Please add a password'],
+    },
+    category: {
+      type: String,
+      required: true,
     },
   },
   {

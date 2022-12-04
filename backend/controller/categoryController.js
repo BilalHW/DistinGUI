@@ -1,3 +1,4 @@
+const { Console } = require("console");
 const asyncHandler = require("express-async-handler");
 
 const Category = require("../models/categoryModel");
@@ -7,49 +8,44 @@ const User = require("../models/itemModel");
 // @route   GET /api/Category
 const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find();
-
+    // res.json({name: "Ali"})
   res.status(200).json(categories);
+
 });
 
 // @desc    Set Category
 // @route   POST /api/Category
 const addCategory = asyncHandler(async (req, res) => {
+
   if (!req.body) {
     res.status(400);
     throw new Error("Please add a category");
   }
-
-  const category = await Category.create({
-    name: req.body.name,
-    items: req.user.items,
+  try {
+      const category = await Category.create({
+        name: req.body.name,
   });
-
   res.status(200).json(category);
+  
+  } catch (error) {
+    // console.log(error)
+    res.status(404).json({err: "Category already exist"})
+  }
+
+
+  
 });
 
 // @desc    Update Category
 // @route   PUT /api/Category/:id
 const updateCategory = asyncHandler(async (req, res) => {
-  const Category = await Category.findById(req.params.id);
-
-  if (!Category) {
+  const newcategory = await Category.findById(req.params.id);
+  if (!newcategory) {
     res.status(400);
     throw new Error("Category not found");
   }
 
-//   // Check for user
-//   if (!req.user) {
-//     res.status(401);
-//     throw new Error("User not found");
-//   }
-
-//   // Make sure the logged in user matches the Category user
-//   if (Category.user.toString() !== req.user.id) {
-//     res.status(401);
-//     throw new Error("User not authorized");
-//   }
-
-  const updatedCategory = await Category.findByIdAndUpdate(req.params.Objectid, req.body, {
+  const updatedCategory = await Category.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
@@ -59,16 +55,14 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @desc    Delete Category
 // @route   DELETE /api/Category/:id
 const deleteCategory = asyncHandler(async (req, res) => {
-  const Category = await Category.findById(req.params.id);
+  const unCategory = await Category.findById(req.params.id);
 
-  if (!Category) {
+  if (!unCategory) {
     res.status(400);
     throw new Error("Category not found");
   }
 
-  // Make sure the logged in user matches the Category user
-
-  await Category.remove();
+  await unCategory.remove();
 
   res.status(200).json({ id: req.params.id });
 });

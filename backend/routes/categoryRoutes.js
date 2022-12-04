@@ -8,6 +8,6 @@ const {
 } = require("../controller/categoryController");
 
 router.route("/").get(getCategories).post(addCategory);
-router.route("/:id").delete(updateCategory).put(deleteCategory);
+router.route("/:id").delete(deleteCategory).put(updateCategory);
 
 module.exports = router;

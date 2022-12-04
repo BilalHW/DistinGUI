@@ -5,25 +5,30 @@ const dotenv = require("dotenv").config();
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const port = process.env.PORT || 3000;
-
+const bodyParser= require("body-parser");
+const { use } = require("./routes/categoryRoutes");
 connectDB();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+app.use("/api/category/", require("./routes/categoryRoutes"));
+app.use("/api/item/",require("./routes/itemRoutes"));
 
-app.use("/api/", require("./routes/categoryRoutes"));
-// app.use("/api/users", require("./routes/userRoutes"));
-
-// Serve frontend
+// // Serve frontend
 // if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-app.get("/", (req, res) => res.send("udt"));
-// } else {
-//   app.get('/', (req, res) => res.send('Please set to production'));
-// }
+//     app.use(express.static(path.join(__dirname, '../frontend/build')));
+  
+//     app.get('*', (req, res) =>
+//       res.sendFile(
+//         path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')
+//       )
+//     );
+//   } else {
+//     app.get('/', (req, res) => res.send('Please set to production'));
+//   }
 
 app.use(errorHandler);
 
