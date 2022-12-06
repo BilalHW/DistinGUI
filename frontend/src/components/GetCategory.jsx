@@ -1,40 +1,29 @@
-import React from 'react'
-import GetItems from './GetItems';
-import { useEffect, useState } from 'react';
-import EditCategory from './EditCategory';
-import RemoveButton from './RemoveButton';
-
+import React, { Fragment } from "react";
+import EditCategory from "./EditCategory";
+import RemoveButton from "./RemoveButton";
+import { useGetCategory } from "../store/userApi";
+import GetItemsAdmin from "./GetItemsAdmin";
 function GetCategory() {
-    const [state, setState] = useState([]);
-
-
-    useEffect(() => {
-      async function fetchData() {
-        // You can await here
-        await fetch("/api/category/", {method: "GET"})
-        .then(async (res) => setState(await res.json()))
-      }
-      fetchData();
-    }, []); 
+  const state=useGetCategory();
 
   return (
-    <div className='font-serif'>
-        {state.map((cat)=>(
-        <>
-          <div className='flex flex-row mt-6 justify-between'>
-            <h1 className=' font-extrabold text-3xl italic'>{cat.name}</h1>
-            <div className='flex flex-row justify-between'>
-                <EditCategory id={cat._id} />
-                <RemoveButton id={cat._id} name="category"/>
+    <div className="max-h max-w font-serif">
+      {state.map((cat,index) => (
+        <Fragment key={index}>
+          <div  className="flex flex-row justify-between">
+            <h1 className=" font-extrabold text-3xl italic">{cat.name}</h1>
+            <div className="flex flex-row justify-between">
+              <EditCategory id={cat._id} />
+              <RemoveButton id={cat._id} name="category" />
             </div>
-            
           </div>
-          <GetItems category={cat.name} />
-        </>
-        
+          <div>
+          <GetItemsAdmin category={cat._id} />
+          </div>
+        </Fragment>
       ))}
     </div>
-  )
+  );
 }
 
-export default GetCategory
+export default GetCategory;

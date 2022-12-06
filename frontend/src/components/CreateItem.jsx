@@ -3,7 +3,7 @@ import {React,useState} from 'react'
 function CreateItem() {
     const [state, setState] = useState('')
     const [isShown, setIsShown] = useState(false);
-    async function onSubmit(e){
+    async function onSubmit(){
         await fetch("/api/item/", {
             method: "POST", 
             body: JSON.stringify(

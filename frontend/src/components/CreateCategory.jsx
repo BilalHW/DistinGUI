@@ -12,14 +12,7 @@ function CreateCategory() {
     }
     const handleClick = event => {
         // 👇️ toggle shown state
-      //   setIsShown(current => !current);
-    
-        // 👇️ or simply set it to true
-        if(isShown===false){
-          setIsShown(true);
-        }else{
-          setIsShown(false);
-        }
+      setIsShown(current => !current);
     }
   return (
     <div className='font-serif font-bold'>

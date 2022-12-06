@@ -28,7 +28,7 @@ const addItems = asyncHandler(async (req, res) => {
             description: req.body.description,
             price: req.body.price,
             image: req.body.image,
-            category: category.name
+            category: category._id
             
         })
             res.status(200).json(item);
@@ -48,13 +48,14 @@ const addItems = asyncHandler(async (req, res) => {
 // @route   PUT /api/Item/:id
 const updateItem = asyncHandler(async (req, res) => {
     try {
+        const categoryOne = await Category.findOne({name: req.body.category}).lean().exec();
         const item = await Item.findById(req.params.id);
 
         if (!item) {
             res.status(400);
             throw new Error("Item not found");
         }
-        const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
+        const updatedItem = await Item.findByIdAndUpdate(req.params.id, {...req.body,category: categoryOne._id}, {
             new: true,
         });
 

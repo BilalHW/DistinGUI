@@ -1,9 +1,9 @@
 import {React, useState } from 'react'
-
 function EditCategory(props) {
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(null);
     const [isShown, setIsShown] = useState(false);
     async function onSubmit(){
+        console.log({category})
         await fetch("/api/category/"+props.id, {
             method: "PUT", 
             body: JSON.stringify({name: category}), 

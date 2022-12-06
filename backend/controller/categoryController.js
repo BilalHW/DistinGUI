@@ -2,7 +2,7 @@ const { Console } = require("console");
 const asyncHandler = require("express-async-handler");
 
 const Category = require("../models/categoryModel");
-const User = require("../models/itemModel");
+const Items = require("../models/itemModel");
 
 // @desc    Get Category
 // @route   GET /api/Category
@@ -56,7 +56,6 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @route   DELETE /api/Category/:id
 const deleteCategory = asyncHandler(async (req, res) => {
   const unCategory = await Category.findById(req.params.id);
-
   if (!unCategory) {
     res.status(400);
     throw new Error("Category not found");

@@ -1,25 +1,13 @@
 import React from 'react'
-import { useState, useEffect } from "react";
-import RemoveButton from './RemoveButton';
-import EditItem from './EditItem';
+import { useGetItems } from '../store/userApi';
 
-function GetItems(category) {
-    const [items, setState] = useState([]);
-
-
-    useEffect(() => {
-        async function fetchData() {
-        // You can await here
-        await fetch("/api/item/", {method: "GET"})
-        .then(async (res) => setState(await res.json()))
-        }
-        fetchData();
-    }, []); 
+function GetItemsUser(props) {
+    const items= useGetItems();
   return (
-    <div>
-        {items.map((state)=>{
-                return state.category===category.category ?
-                                    <div className=" w-4/5 h-fit relative ml-20 mb-20 p-10 align-middle rounded-lg shadow-xl bg-white ">
+<div>
+        {items.map((state, index)=>{
+                return state.category===props.category ?
+                                    <div key={index} className=" w-4/5 h-fit relative ml-20 mb-20 p-10 align-middle rounded-lg shadow-xl bg-white ">
                                         <div className="flex flex-row justify-between">
                                             <div className="flex flex-col justify-start">
                                                 <h1 className="text-dark font-extrabold text-2xl">
@@ -33,21 +21,16 @@ function GetItems(category) {
                                                 <img src={state.image} className="w-full h-48 rounded-xl align-middle" alt='no img' />
                                             </div>
                                             <div className="h-full mx-1 px-1 rounded-md text-xl text-right text-black font-extrabold ">
-                                               {state.price}$
+                                               {state.price} Lbp
                                             </div>
                                         </div>
-                                        <div className='flex flex-row justify-between align-baseline place-content-baseline'>
-                                                <RemoveButton id={state._id} name="item"/>
-                                                <EditItem  id={state._id} />
-                                            </div>
                                     </div>
                             :   null
-            
-        
+                
         })}
         
     </div>
   )
 }
 
-export default GetItems
+export default GetItemsUser
